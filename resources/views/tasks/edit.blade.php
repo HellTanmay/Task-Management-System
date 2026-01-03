@@ -1,6 +1,6 @@
 @extends('Layout.layout')
 
-@section('title', 'Add Task')
+@section('title', 'Edit Task')
 
 @section('content')
 <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
@@ -9,7 +9,7 @@
     {{-- Header --}}
     <div class="mb-8 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900">Add Task</h1>
+            <h1 class="text-3xl font-bold text-slate-900">Edit Task</h1>
         </div>
 
         <a
@@ -24,15 +24,16 @@
         </a>
     </div>
 
-    {{-- Add Task Form --}}
+    {{-- Edit Task Form --}}
     <div class="w-full max-w-lg mx-auto">
-        <form method="POST" action="/tasks"
+        <form method="POST" action="{{ route('tasks.update', $task) }}"
               class="space-y-6 rounded-xl bg-white p-8 shadow-lg ring-1 ring-slate-200">
             @csrf
+            @method('PUT')
 
             <div class="text-center">
-                <h2 class="text-xl font-semibold text-slate-800 mb-2">Create New Task</h2>
-                <p class="text-sm text-slate-600">Fill in the details below to add your task.</p>
+                <h2 class="text-xl font-semibold text-slate-800 mb-2">Update Task</h2>
+                <p class="text-sm text-slate-600">Modify the task information below.</p>
             </div>
 
             <div class="space-y-2">
@@ -46,7 +47,7 @@
                     id="title"
                     type="text"
                     name="title"
-                    placeholder="e.g. Finish report"
+                    value="{{ old('title', $task->title) }}"
                     required
                     class="block w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400
                            focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors duration-200"
@@ -64,11 +65,9 @@
                     id="description"
                     name="description"
                     rows="4"
-                    placeholder="Add a short description"
-                    required
                     class="block w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400
                            focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors duration-200 resize-none"
-                ></textarea>
+                >{{ old('description', $task->description) }}</textarea>
             </div>
 
             <div class="space-y-2">
@@ -81,13 +80,12 @@
                 <select
                     id="priority"
                     name="Priority"
-                    required
                     class="block w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900
                            focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-colors duration-200"
                 >
-                    <option value="low">Low</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="high">High</option>
+                    <option value="low" {{ $task->Priority === 'low' ? 'selected' : '' }}>Low</option>
+                    <option value="medium" {{ $task->Priority === 'medium' ? 'selected' : '' }}>Medium</option>
+                    <option value="high" {{ $task->Priority === 'high' ? 'selected' : '' }}>High</option>
                 </select>
             </div>
 
@@ -109,7 +107,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    Save Task
+                    Update Task
                 </button>
             </div>
         </form>
