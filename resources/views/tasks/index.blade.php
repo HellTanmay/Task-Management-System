@@ -35,7 +35,7 @@
 
         <div class="space-y-4">
             @forelse($tasks as $task)
-                <div class="bg-white rounded-xl shadow-sm ring-1 ring-slate-200 hover:shadow-md transition-shadow duration-200">
+                <div class="{{ $task->Status==='completed'? 'bg-gray-200' :'bg-white'}} rounded-xl shadow-sm ring-1 ring-slate-200 hover:shadow-md transition-shadow duration-200">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6">
                         <div class="flex-1 mb-4 sm:mb-0">
                             <!-- Task Title -->
