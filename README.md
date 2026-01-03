@@ -35,8 +35,8 @@ A clean and minimal Task Management System built using **Laravel**, allowing use
 | id | bigint |
 | title | string |
 | description | text (nullable) |
-| priority | enum (low, medium, high) |
-| status | enum (pending, completed) |
+| Priority | enum (low, medium, high) |
+| Status | enum (pending, completed) |
 | created_at | timestamp |
 | updated_at | timestamp |
 
@@ -47,6 +47,7 @@ A clean and minimal Task Management System built using **Laravel**, allowing use
 1. Clone the repository:
    ```bash
    git clone https://github.com/HellTanmay/Task-Management-System.git
+   cd Task-Management-System
    ```
 
 2. Install php and javascript dependencies
@@ -54,13 +55,15 @@ A clean and minimal Task Management System built using **Laravel**, allowing use
     composer install
     npm install
     ```
-3. Generate an application key using the below command
-
+3. Configure Environment
     ```bash
+    cp .env.example .env
     php artisan key:generate
     ```
 4. Update .env with database credentials
-5. Run migrations
+   If you are using mysql change the DATABASE_CONNECTION to mysql
+
+7. Run migrations
     ```bash
     php artisan migrate
     ```
