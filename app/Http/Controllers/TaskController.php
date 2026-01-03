@@ -4,28 +4,67 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use PHPUnit\Event\TestSuite\Sorted;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::latest()->get();
+        $tasks = Task::orderByRaw("
+    CASE priority
+        WHEN 'high' THEN 1
+        WHEN 'medium' THEN 2
+        WHEN 'low' THEN 3
+    END
+")->latest()->get();
         return view('tasks.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+        return view('tasks.addtasks');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required'
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'Priority' => 'required|in:low,medium,high',
         ]);
 
-        Task::create($request->all());
-        return redirect()->back();
+        Task::create([
+            ...$validated,
+            'Status' => 'pending',
+        ]);
+
+        return redirect()->route('tasks.index');
     }
 
-     public function update(Request $request, Task $task)
+    public function edit(Task $task)
+{
+    return view('tasks.edit', compact('task'));
+}
+
+    public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'Priority' => 'required|in:low,medium,high',
+        ]);
+
+        $task->update($validated);
+
+        return redirect()->route('tasks.index');
+    }
+
+    public function complete(Task $task)
+    {
+        $task->update([
+            'Status' => 'completed'
+        ]);
+
         return redirect()->back();
     }
 
