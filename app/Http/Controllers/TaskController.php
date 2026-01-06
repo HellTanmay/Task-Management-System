@@ -29,10 +29,12 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'description' => 'nullable|string',
             'Priority' => 'required|in:low,medium,high',
-        ]);
+        ],
+        ['title.max'=>'Title should not exceed 50 characters.']
+        );
 
         Task::create([
             ...$validated,
@@ -43,17 +45,19 @@ class TaskController extends Controller
     }
 
     public function edit(Task $task)
-{
-    return view('tasks.edit', compact('task'));
-}
+    {
+        return view('tasks.edit', compact('task'));
+    }
 
     public function update(Request $request, Task $task)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'description' => 'nullable|string',
             'Priority' => 'required|in:low,medium,high',
-        ]);
+        ],
+        ['title.max'=>'Title should not exceed 50 characters.']
+    );
 
         $task->update($validated);
 

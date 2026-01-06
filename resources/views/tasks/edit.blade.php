@@ -111,6 +111,9 @@
                 </button>
             </div>
         </form>
+          @error('title')
+            <div class="mt-2 text-sm text-red-600">Error: {{ $message }}</div>
+        @enderror
     </div>
 </div>
 </body>
